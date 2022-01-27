@@ -133,22 +133,27 @@ public class ListaDobleEnlazada <T>{
 	 * @param value el valor del nodo a insertar
 	 * @param pos la posicion donde se desean insertar
 	 * @return el nuevo tamaño de la lista
+	 * @throws IllegalArgumentException Si la posicion no existe (si posicion == Size inserta al final)
 	 */
-	public int put (T value, int pos) {
+	public int put (T value, int pos) throws IllegalArgumentException{
 		
-		if(pos <= 0) {
+		if(pos == 0) {
 			this.unshift(value);
-		}else if (pos >= this.Size ) {
+		}else if (pos == this.Size ) {
 			this.push(value);
 		}else {
-			Nodo <T> aux = find(pos);
-			Nodo <T> newNodo = new Nodo<>(value);
-			newNodo.Siguiente = aux;
-			newNodo.Anterior = aux.Anterior;
-			aux.Anterior.Siguiente = newNodo;
-			aux.Anterior = newNodo;
-			
-			this.Size++;
+			try {
+				Nodo <T> aux = find(pos);
+				Nodo <T> newNodo = new Nodo<>(value);
+				newNodo.Siguiente = aux;
+				newNodo.Anterior = aux.Anterior;
+				aux.Anterior.Siguiente = newNodo;
+				aux.Anterior = newNodo;
+				
+				this.Size++;
+			}catch(IllegalArgumentException e) {
+				throw e;
+			}
 		}
 			
 		return this.Size;
@@ -157,32 +162,33 @@ public class ListaDobleEnlazada <T>{
 	/**
 	 * Elimina el nodo que se encuentre en la posicion indicada
 	 * @param pos posicion del nodo a eliminar
-	 * @return Dato eliminado
+	 * @return el tamaño de la lista
+	 * @throws IllegalArgumentException Excepcion si la posicion no existe
 	 */
-	public T remove(int pos) {
-		T data;
-		
-		if(pos <= 0) {
-			data = this.shift();
-		}else if (pos >= this.Size - 1) {
-			data = this.pop();
+	public int remove(int pos) throws IllegalArgumentException{
+		if(pos == 0) {
+			this.shift();
+		}else if (pos == this.Size - 1) {
+			this.pop();
 		}else {
-			Nodo <T> aux = find(pos);
-			data = aux.getDato();
-			
-			aux.Anterior.Siguiente = aux.Siguiente; 
-			aux.Siguiente.Anterior = aux.Anterior;
-			
-			this.Size--;
+			try {
+				Nodo <T> aux = find(pos);
+				aux.Anterior.Siguiente = aux.Siguiente; 
+				aux.Siguiente.Anterior = aux.Anterior;
+				
+				this.Size--;
+			}catch(IllegalArgumentException e) {
+				throw e;
+			}
 		}
 		
-		return data;
+		return this.Size;
 	}
 	
 	/**
 	 * Remueve el nodo que contenga el mismo dato 
-	 * @param v
-	 * @return
+	 * @param v dato a buscar
+	 * @return Tamaño de la lista
 	 */
 	public int removeElement(T v) {
 		
@@ -192,7 +198,7 @@ public class ListaDobleEnlazada <T>{
 			this.remove(pos);
 		}
 		
-		return pos;
+		return this.Size;
 	}
 	
 	/**

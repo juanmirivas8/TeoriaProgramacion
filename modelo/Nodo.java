@@ -9,14 +9,14 @@ public class Nodo <T> {
 	
 	@SuppressWarnings("unused")
 	private Nodo(){
-		Anterior=null;
-		dato=null;
-		Siguiente=null;
+		Anterior = null;
+		dato = null;
+		Siguiente = null;
 	}
 	public Nodo(T dato){
-		Anterior=null;
-		this.dato=dato;
-		Siguiente=null;
+		Anterior = null;
+		this.dato = dato;
+		Siguiente = null;
 	}
 	public T getDato() {
 		return dato;
